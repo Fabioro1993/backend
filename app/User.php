@@ -6,11 +6,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
+    use HasApiTokens;
 
     protected $dates = ['deleted_at'];
     /**
@@ -19,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nombre', 'apellido', 'direccion', 'cedula', 'telefono', 'email', 'id_nivel',
+        'nombre', 'apellido', 'direccion', 'cedula', 'telefono', 'email', 'id_nivel', 'password',
     ];
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Restaurant;
+use App\User;
 
 class RestaurantController extends Controller
 {
@@ -25,23 +26,39 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
+        //Registro del dueno
+
+        $usuario = new User();
+        $usuario->nombre = $request->get('nombre');
+        $usuario->telefono = $request->get('telefono');
+        $usuario->direccion = $request->get('direccion');
+        $usuario->cedula = $request->get('cedula');
+        $usuario->email = $request->get('email');
+
+        $usuario->password =bcrypt(12345); 
+        $usuario->id_nivel = 2;
+
+        $usuario->save();
+
+        //dd($request->all());
         //MANIPULACION DE IMAGENES
-        if ($request->file('item_ruta')) { //nombre del input (boton)
+        /*if ($request->file('item_ruta')) { //nombre del input (boton)
             $file = $request->file('item_ruta');
             $item_ruta = time() . $file->getClientOriginalName();   //generar nombre unico a la imagen
             $path = public_path(). '/inv_img/'; // ruta donde guardamos la imagen
             $file->move($path, $item_ruta); // Movemos la imagen a la carpeta
-        }
+        }*/
 
         $restaurante = new Restaurant();
         $restaurante->nombre_rest = $request->get('nombre_rest');
         $restaurante->direccion_rest = $request->get('direccion_rest');
         $restaurante->telefono_rest = $request->get('telefono_rest');
         $restaurante->social = $request->get('social');
-        $restaurante->id_dueno = $request->get('id_dueno'); 
-        $restaurante->id_nivel = $request->get('id_nivel');
-        $restaurante->logo_rest = $item_ruta;
+        $restaurante->id_dueno = $usuario->id_users;
+        $restaurante->id_nivel = 4;
+        $restaurante->logo_rest = 'ruta';
+        //$restaurante->logo_rest = $item_ruta;
         $restaurante->save();
 
         return response()->json($restaurante);

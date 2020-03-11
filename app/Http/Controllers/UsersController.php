@@ -29,6 +29,7 @@ class UsersController extends Controller
         $usuario->nombre = $request->get('nombre');
         $usuario->apellido = $request->get('apellido');
         $usuario->direccion = $request->get('direccion');
+        $usuario->telefono = $request->get('telefono');
         $usuario->cedula = $request->get('cedula');
         $usuario->email = $request->get('email');
 
