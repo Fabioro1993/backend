@@ -25,14 +25,13 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        //dd( $request->all());
         //MANIPULACION DE IMAGENES
-        /*if ($request->file('menu_ruta')) { //nombre del input (boton)
-            $file = $request->file('menu_ruta');
-            $menu_ruta = time() . $file->getClientOriginalName();   //generar nombre unico a la imagen
-            $path = public_path(). '/inv_img/menu/'; // ruta donde guardamos la imagen
-            $file->move($path, $menu_ruta); // Movemos la imagen a la carpeta
-        }*/
+        if ($request->file('imag_menu')) { //nombre del input (boton)
+            $file = $request->file('imag_menu');
+            $imag_menu =  time() . $request->get('nombre_menu') .'-'. $file->getClientOriginalName();   //generar nombre unico a la imagen
+            $path = public_path(). '/img/menu/'; // ruta donde guardamos la imagen
+            $file->move($path, $imag_menu); // Movemos la imagen a la carpeta
+        }
 
         $menu = new Menu();
         $menu->nombre_menu = $request->get('nombre_menu');
@@ -41,7 +40,7 @@ class MenuController extends Controller
         $menu->id_restaurant = $request->get('id_restaurant');
         $menu->id_tipo = $request->get('id_tipo'); 
         $menu->id_nivel = 4;
-        $menu->imag_menu = '$menu_ruta';
+        $menu->imag_menu = $imag_menu;
         $menu->save();
 
         return response()->json($menu);

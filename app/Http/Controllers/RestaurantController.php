@@ -26,29 +26,24 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
         //Registro del dueno
-
         $usuario = new User();
         $usuario->nombre = $request->get('nombre');
         $usuario->telefono = $request->get('telefono');
         $usuario->direccion = $request->get('direccion');
         $usuario->cedula = $request->get('cedula');
         $usuario->email = $request->get('email');
-
         $usuario->password =bcrypt(12345); 
         $usuario->id_nivel = 2;
-
         $usuario->save();
 
-        //dd($request->all());
         //MANIPULACION DE IMAGENES
-        /*if ($request->file('item_ruta')) { //nombre del input (boton)
-            $file = $request->file('item_ruta');
-            $item_ruta = time() . $file->getClientOriginalName();   //generar nombre unico a la imagen
-            $path = public_path(). '/inv_img/'; // ruta donde guardamos la imagen
-            $file->move($path, $item_ruta); // Movemos la imagen a la carpeta
-        }*/
+        if ($request->file('logo_rest')) { //nombre del input (boton)
+            $file = $request->file('logo_rest');
+            $logo_rest =  time() . $request->get('nombre_rest') .'-'. $file->getClientOriginalName();   //generar nombre unico a la imagen
+            $path = public_path(). '/img/restautante/'; // ruta donde guardamos la imagen
+            $file->move($path, $logo_rest); // Movemos la imagen a la carpeta
+        }
 
         $restaurante = new Restaurant();
         $restaurante->nombre_rest = $request->get('nombre_rest');
@@ -57,8 +52,7 @@ class RestaurantController extends Controller
         $restaurante->social = $request->get('social');
         $restaurante->id_dueno = $usuario->id_users;
         $restaurante->id_nivel = 4;
-        $restaurante->logo_rest = 'ruta';
-        //$restaurante->logo_rest = $item_ruta;
+        $restaurante->logo_rest = $logo_rest;
         $restaurante->save();
 
         return response()->json($restaurante);
