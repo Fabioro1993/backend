@@ -47,7 +47,7 @@ $router->get('restaurante/{id_restaurant}/delete', 'RestaurantController@destroy
 $router->get('menu', 'MenuController@index');
 $router->post('menu/store', 'MenuController@store');
 $router->get('menu/{id_menu}/show', 'MenuController@show');
-$router->get('menu/{id_menu}/update', 'MenuController@update');
+$router->post('menu/{id_menu}/update', 'MenuController@update');
 $router->get('menu/{id_menu}/delete', 'MenuController@destroy');
 
 //Pedido

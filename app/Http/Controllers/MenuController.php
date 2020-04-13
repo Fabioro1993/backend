@@ -30,6 +30,7 @@ class MenuController extends Controller
             $file = $request->file('imag_menu');
             $imag_menu =  time() . $request->get('nombre_menu') .'-'. $file->getClientOriginalName();   //generar nombre unico a la imagen
             $path = public_path(). '/img/menu/'; // ruta donde guardamos la imagen
+            //dd($path);
             $file->move($path, $imag_menu); // Movemos la imagen a la carpeta
         }
 
@@ -40,7 +41,7 @@ class MenuController extends Controller
         $menu->id_restaurant = $request->get('id_restaurant');
         $menu->id_tipo = $request->get('id_tipo'); 
         $menu->id_nivel = 4;
-        $menu->imag_menu = $imag_menu;
+        $menu->imag_menu = '/img/menu/'.$imag_menu;
         $menu->save();
 
         return response()->json($menu);
@@ -66,18 +67,16 @@ class MenuController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //VALIDACION
-        $this->validate($request, [
-            'menu_ruta' => 'image',
-        ]);
+    {        
+        //dd($request->all(), $id);
         
         //MANIPULACION DE IMAGENES
-        if ($request->file('menu_ruta')) { //nombre del input (boton)
-            $file = $request->file('menu_ruta');
-            $menu_ruta = time() . $file->getClientOriginalName();   //generar nombre unico a la imagen
-            $path = public_path(). '/inv_img/menu/'; // ruta donde guardamos la imagen
-            $file->move($path, $menu_ruta); // Movemos la imagen a la carpeta
+        if ($request->file('imag_menu')) { //nombre del input (boton)
+            $file = $request->file('imag_menu');
+            $imag_menu =  time() . $request->get('nombre_menu') .'-'. $file->getClientOriginalName();   //generar nombre unico a la imagen
+            $path = public_path(). '/img/menu/'; // ruta donde guardamos la imagen
+            //dd($path);
+            $file->move($path, $imag_menu); // Movemos la imagen a la carpeta
         }
 
         $menu = Menu::findOrFail($id);
@@ -86,10 +85,16 @@ class MenuController extends Controller
         $menu->precio = $request->get('precio');
         $menu->id_restaurant = $request->get('id_restaurant');
         $menu->id_tipo = $request->get('id_tipo'); 
-        $menu->id_nivel = $request->get('id_nivel');
+
+        if ( $request->get('id_nivel') == 'true' || $request->get('id_nivel') == 4) {
+            $menu->id_nivel = 4;
+        } else {
+            $menu->id_nivel = 5;
+        }
+                
         //Si la imagen existe
-        if ($request->file('menu_ruta')) { 
-            $menu->logo_rest = $menu_ruta;
+        if ($request->file('imag_menu')) { 
+            $menu->imag_menu = '/img/menu/'.$imag_menu;
         }
 
         $menu->save();
